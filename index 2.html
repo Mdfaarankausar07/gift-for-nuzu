@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FOR NUZHAT ❤️</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <!-- EmailJS for Answer Tracking -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --gold: #d4af37;
+            --glass: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
+
+        /* --- Transitions --- */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- Background Container --- */
+        #bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            transition: background 1.5s ease;
+        }
+
+        /* --- UI Elements --- */
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            line-height: 1.4;
+        }
+
+        .input-area {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: 0.3s;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.3);
+        }
+
+        .btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .option-btn {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .option-btn.selected {
+            background: var(--primary);
+            border-color: transparent;
+            transform: scale(1.05);
+        }
+
+        /* --- Music Player --- */
+        #music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            display: none;
+        }
+
+        /* --- Opening Heart --- */
+        .crystal-heart {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #ff758c, #ff4d6d);
+            position: relative;
+            transform: rotate(-45deg);
+            animation: beat 1.5s infinite;
+            filter: drop-shadow(0 0 30px #ff4d6d);
+            cursor: pointer;
+        }
+
+        .crystal-heart::before, .crystal-heart::after {
+            content: '';
+            width: 150px;
+            height: 150px;
+            background: inherit;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .crystal-heart::before { top: -75px; left: 0; }
+        .crystal-heart::after { top: 0; right: -75px; }
+
+        @keyframes beat {
+            0% { transform: rotate(-45deg) scale(1); }
+            20% { transform: rotate(-45deg) scale(1.1); }
+            40% { transform: rotate(-45deg) scale(1); }
+            60% { transform: rotate(-45deg) scale(1.2); }
+            100% { transform: rotate(-45deg) scale(1); }
+        }
+
+        /* --- Particles --- */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Special Styles for Multi-select --- */
+        .multi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Summary Cards --- */
+        .memory-card {
+            background: var(--glass);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            border-left: 3px solid var(--primary);
+            width: 100%;
+        }
+        
+        .memory-card span {
+            color: var(--primary);
+            font-weight: bold;
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        /* --- Cinematic Scene --- */
+        #cinematic-scene {
+            background: linear-gradient(to top, #2c3e50, #000000);
+            overflow: hidden;
+        }
+
+        .silhouette {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            z-index: 2;
+        }
+
+        /* Custom Animations */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="bg-container"></div>
+
+    <div id="music-player" onclick="toggleMusic()">
+        <svg id="music-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+        <audio id="bg-music" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Screen 0: Opening -->
+    <div class="screen active" id="screen-opening">
+        <div class="crystal-heart" onclick="startExperience()"></div>
+        <p style="margin-top: 100px; font-weight: 200; letter-spacing: 2px; color: rgba(255,255,255,0.7);">Someone has been waiting for you...</p>
+        <h2 id="opening-subtext" style="opacity:0; transition: 2s; font-size: 1.2rem; margin-top: 10px;">Only Nuzhat can continue.</h2>
+    </div>
+
+    <!-- Screen 1: Password -->
+    <div class="screen" id="screen-password">
+        <h1>Are you Nuzhat?</h1>
+        <div class="input-area">
+            <input type="text" id="pass-input" placeholder="The special name I use for you...">
+            <p id="pass-error" style="color: var(--primary); font-size: 0.8rem; margin-bottom: 15px; display:none;">Incorrect answer. Hint: No emojis.</p>
+            <button class="btn" onclick="checkPassword()">Enter</button>
+        </div>
+    </div>
+
+    <!-- Question 1: Cherry Blossom -->
+    <div class="screen" id="q1">
+        <h1>May I know you personally?</h1>
+        <div class="option-grid">
+            <div class="option-btn" onclick="saveAnswer(1, 'Yes')">Yes</div>
+            <div class="option-btn" onclick="saveAnswer(1, 'No')">No</div>
+        </div>
+    </div>
+
+    <!-- Question 2: Lanterns -->
+    <div class="screen" id="q2">
+        <h1>Do you think about me?</h1>
+        <div class="option-grid">
+            <div class="option-btn" onclick="saveAnswer(2, 'Yes')">Yes</div>
+            <div class="option-btn" onclick="saveAnswer(2, 'No')">No</div>
+        </div>
+    </div>
+
+    <!-- Question 3: Multi-select -->
+    <div class="screen" id="q3">
+        <h1>What matters most in a relationship?</h1>
+        <div class="multi-grid">
+            <div class="option-btn multi" data-val="Trust">Trust</div>
+            <div class="option-btn multi" data-val="Loyalty">Loyalty</div>
+            <div class="option-btn multi" data-val="Respect">Respect</div>
+            <div class="option-btn multi" data-val="Communication">Communication</div>
+            <div class="option-btn multi" data-val="Effort">Effort</div>
+            <div class="option-btn multi" data-val="Love">Love</div>
+        </div>
+        <button class="btn" onclick="saveMulti(3)">Continue</button>
+    </div>
+
+    <!-- Question 4: Butterfly -->
+    <div class="screen" id="q4">
+        <h1>Do you like travelling?</h1>
+        <div class="option-grid">
+            <div class="option-btn" onclick="saveAnswer(4, 'Yes')">Yes</div>
+            <div class="option-btn" onclick="saveAnswer(4, 'No')">No</div>
+        </div>
+    </div>
+
+    <!-- Question 5: Dream Sky -->
+    <div class="screen" id="q5">
+        <h1>Which place in India would you love to visit?</h1>
+        <div class="input-area">
+            <input type="text" id="ans-5" placeholder="Enter place name...">
+            <button class="btn" onclick="saveInput(5)">Next</button>
+        </div>
+    </div>
+
+    <!-- Question 6: Rainy Window -->
+    <div class="screen" id="q6">
+        <h1>What do you do when you feel sad?</h1>
+        <div class="input-area">
+            <input type="text" id="ans-6" placeholder="Your answer...">
+            <button class="btn" onclick="saveInput(6)">Next</button>
+        </div>
+    </div>
+
+    <!-- Question 7: Sunset -->
+    <div class="screen" id="q7">
+        <h1>Which habit of mine do you like?</h1>
+        <div class="input-area">
+            <input type="text" id="ans-7" placeholder="Be honest...">
+            <button class="btn" onclick="saveInput(7)">Next</button>
+        </div>
+    </div>
+
+    <!-- Emotional Celebration -->
+    <div class="screen" id="celebration">
+        <h1 style="color: var(--primary);">Congratulations ❤️</h1>
+        <p style="margin-bottom: 30px;">You've unlocked a piece of my heart.</p>
+        <button class="btn" onclick="playCinematic()">Press Enter to Continue</button>
+    </div>
+
+    <!-- Cinematic Scene -->
+    <div class="screen" id="cinematic-scene">
+        <div id="cine-canvas"></div>
+        <div class="silhouette" style="display:flex; justify-content:center; align-items:flex-end; padding-bottom:50px; font-style:italic; font-family:'Playfair Display'; font-size:1.2rem;">
+            "Two souls, one journey..."
+        </div>
+    </div>
+
+    <!-- Continue Screen -->
+    <div class="screen" id="continue-screen">
+        <h1>Would you like to continue?</h1>
+        <div class="option-grid">
+            <div class="option-btn" onclick="nextScreen()">Yes</div>
+            <div class="option-btn" onclick="nextScreen()">Of Course</div>
+        </div>
+    </div>
+
+    <!-- Question 8-14 -->
+    <div class="screen" id="q8">
+        <h1>Do you like me?</h1>
+        <div class="option-grid">
+            <div class="option-btn" onclick="saveAnswer(8, 'Yes')">Yes</div>
+            <div class="option-btn" onclick="saveAnswer(8, 'No')">No</div>
+        </div>
+    </div>
+
+    <div class="screen" id="q9">
+        <h1>What do you think about me?</h1>
+        <input type="text" id="ans-9" placeholder="...">
+        <button class="btn" onclick="saveInput(9)">Next</button>
+    </div>
+
+    <div class="screen" id="q10">
+        <h1>How would you rate me out of 10?</h1>
+        <input type="text" id="ans-10" placeholder="1 to 10...">
+        <button class="btn" onclick="saveInput(10)">Next</button>
+    </div>
+
+    <div class="screen" id="q11">
+        <h1>Do I exist somewhere in your heart right now?</h1>
+        <div class="option-grid">
+            <div class="option-btn" onclick="saveAnswer(11, 'Yes')">Yes</div>
+            <div class="option-btn" onclick="saveAnswer(11, 'No')">No</div>
+        </div>
+    </div>
+
+    <div class="screen" id="q12">
+        <h1>Would you go on a date with me?</h1>
+        <input type="text" id="ans-12" placeholder="Your answer...">
+        <button class="btn" onclick="saveInput(12)">Next</button>
+    </div>
+
+    <div class="screen" id="q13">
+        <h1>Would you marry me one day?</h1>
+        <input type="text" id="ans-13" placeholder="...">
+        <button class="btn" onclick="saveInput(13)">Next</button>
+    </div>
+
+    <div class="screen" id="q14">
+        <h1>Would you like to spend your life journey with me?</h1>
+        <input type="text" id="ans-14" placeholder="...">
+        <button class="btn" onclick="saveInput(14)">Next</button>
+    </div>
+
+    <!-- Final Screen -->
+    <div class="screen" id="screen-final" style="overflow-y: auto; display: block; padding-top: 50px;">
+        <h1 style="color: var(--primary); margin-bottom: 10px;">Congratulations ❤️</h1>
+        <p style="font-size: 0.9rem; margin-bottom: 30px;">You completed this journey.</p>
+        
+        <div id="summary-container" style="max-width:350px; margin: 0 auto;"></div>
+
+        <div style="margin: 40px 0;">
+            <p style="font-style: italic; font-family: 'Playfair Display'; margin-bottom: 20px;">"Love grows strongest when two hearts keep choosing each other."</p>
+            <button class="btn" onclick="location.reload()" style="margin-bottom: 50px;">Restart Journey</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const CORRECT_PASSWORD = "Nuzu";
+        let currentScreenIndex = 0;
+        let answers = {};
+        const screens = [
+            'screen-opening', 'screen-password', 'q1', 'q2', 'q3', 'q4', 
+            'q5', 'q6', 'q7', 'celebration', 'cinematic-scene', 
+            'continue-screen', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'screen-final'
+        ];
+
+        const themes = {
+            'screen-opening': 'black',
+            'screen-password': 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            'q1': 'linear-gradient(rgba(255, 182, 193, 0.4), rgba(255, 182, 193, 0.4)), url("https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1000&q=80")',
+            'q2': 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?auto=format&fit=crop&w=1000&q=80")',
+            'q3': 'linear-gradient(135deg, #1a1a1a 0%, #434343 100%)',
+            'q4': 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("https://images.unsplash.com/photo-1550684376-efcbd6e3f031?auto=format&fit=crop&w=1000&q=80")',
+            'q5': 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+            'q6': 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1000&q=80")',
+            'q7': 'linear-gradient(to top, #ff0844 0%, #ffb199 100%)',
+            'celebration': 'radial-gradient(circle, #ff4d6d, #000)',
+            'cinematic-scene': '#000',
+            'continue-screen': 'radial-gradient(circle at center, #1b2735 0%, #090a0f 100%)',
+            'q8': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'q9': 'linear-gradient(135deg, #2af598 0%, #009efd 100%)',
+            'q10': 'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)',
+            'q11': 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
+            'q12': 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1000&q=80")',
+            'q13': 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+            'q14': 'radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%)',
+            'screen-final': 'linear-gradient(to top, #000, #1a1a1a)'
+        };
+
+        // --- Logic ---
+        
+        // Show text after delay
+        setTimeout(() => {
+            document.getElementById('opening-subtext').style.opacity = "1";
+        }, 2500);
+
+        function startExperience() {
+            nextScreen();
+            document.getElementById('music-player').style.display = 'flex';
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            if (music.paused) {
+                music.play();
+                document.getElementById('music-icon').style.stroke = "#ff4d6d";
+            } else {
+                music.pause();
+                document.getElementById('music-icon').style.stroke = "white";
+            }
+        }
+
+        function checkPassword() {
+            const val = document.getElementById('pass-input').value;
+            if (val.trim().toLowerCase() === CORRECT_PASSWORD.toLowerCase()) {
+                nextScreen();
+            } else {
+                document.getElementById('pass-error').style.display = 'block';
+            }
+        }
+
+        function nextScreen() {
+            const currentId = screens[currentScreenIndex];
+            document.getElementById(currentId).classList.remove('active');
+            
+            currentScreenIndex++;
+            const nextId = screens[currentScreenIndex];
+            
+            setTimeout(() => {
+                document.getElementById(nextId).classList.add('active');
+                document.getElementById('bg-container').style.background = themes[nextId] || '#000';
+                document.getElementById('bg-container').style.backgroundSize = 'cover';
+                document.getElementById('bg-container').style.backgroundPosition = 'center';
+                
+                // Add specific particles based on screen
+                triggerEffect(nextId);
+            }, 600);
+        }
+
+        // Multi-select Logic
+        document.querySelectorAll('.option-btn.multi').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('selected');
+            });
+        });
+
+        function saveAnswer(qNum, val) {
+            answers[`Question ${qNum}`] = val;
+            rewardAnimation();
+            nextScreen();
+        }
+
+        function saveMulti(qNum) {
+            const selected = Array.from(document.querySelectorAll('.option-btn.multi.selected')).map(el => el.getAttribute('data-val'));
+            if(selected.length === 0) return alert("Please select at least one.");
+            answers[`Question ${qNum}`] = selected.join(", ");
+            rewardAnimation();
+            nextScreen();
+        }
+
+        function saveInput(qNum) {
+            const val = document.getElementById(`ans-${qNum}`).value;
+            if(!val) return;
+            answers[`Question ${qNum}`] = val;
+            rewardAnimation();
+            nextScreen();
+        }
+
+        function playCinematic() {
+            nextScreen();
+            // Cinematic scene lasts 5 seconds then auto continues
+            setTimeout(() => {
+                nextScreen();
+            }, 6000);
+        }
+
+        function rewardAnimation() {
+            // Burst of hearts
+            for(let i=0; i<15; i++) {
+                createParticle('❤️');
+            }
+        }
+
+        function createParticle(type) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.innerHTML = type;
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '100vh';
+            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            p.style.transition = `all ${Math.random() * 2 + 2}s linear`;
+            p.style.opacity = Math.random();
+            document.body.appendChild(p);
+
+            setTimeout(() => {
+                p.style.transform = `translateY(-110vh) translateX(${(Math.random() - 0.5) * 100}px) rotate(${Math.random() * 360}deg)`;
+                p.style.opacity = '0';
+            }, 10);
+
+            setTimeout(() => p.remove(), 4000);
+        }
+
+        function triggerEffect(screenId) {
+            // Different effects for different screens
+            if(screenId === 'q1') setInterval(() => createParticle('🌸'), 500);
+            if(screenId === 'q2') setInterval(() => createParticle('🏮'), 800);
+            if(screenId === 'q4') setInterval(() => createParticle('🦋'), 600);
+            if(screenId === 'q8') setInterval(() => createParticle('✨'), 400);
+            if(screenId === 'screen-final') {
+                setInterval(() => createParticle('❤️'), 300);
+                setInterval(() => createParticle('✨'), 500);
+                displaySummary();
+                sendEmail();
+            }
+        }
+
+        function displaySummary() {
+            const container = document.getElementById('summary-container');
+            container.innerHTML = '';
+            for(let key in answers) {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.innerHTML = `<span>${key}</span> ${answers[key]}`;
+                container.appendChild(card);
+            }
+        }
+
+        function sendEmail() {
+            // Integration Placeholder
+            // To make this work, sign up at emailjs.com and replace the IDs below
+            // emailjs.init("YOUR_PUBLIC_KEY");
+            // emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", answers);
+            console.log("Answers saved and ready to send:", answers);
+        }
+
+        // Initialize Audio Autoplay Policy fix
+        document.body.addEventListener('click', () => {
+            // Some browsers require interaction
+        }, {once: true});
+
+    </script>
+</body>
+</html>
